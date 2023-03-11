@@ -19,9 +19,13 @@ export function errorHandler(err: Error, req: Request, res: Response<ErrorRespon
 
 export function checkSearchParams(req: Request, res: Response, next: NextFunction) {
   if (Object.keys(req.query).length !== 0) {
+    Object.keys(req.query).forEach(queryName => {
+      req.query[queryName] = req.query[queryName]?.toString().toLowerCase();
+    });
+
     next();
   } else {
-    res.status(400).send({ data: 'missing search params' });
+    res.status(400).send({ data: 'missing search query params' });
   }
 
 }
