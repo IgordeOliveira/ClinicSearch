@@ -1,8 +1,11 @@
+import axios from 'axios';
 import request from 'supertest';
 import app from '../src/app';
 import { dental, vet } from './dummyData';
+import MockAdapter from 'axios-mock-adapter';
 
 const SEARCH_URL = '/api/v1/clinics/search';
+
 
 const clinicToSearch = {
   name: 'Mayo Clinic',
@@ -33,10 +36,20 @@ describe('GET /api/v1/clinics/search', function () {
 });
 
 describe('Search tests', function () {
+
+  const mock = new MockAdapter(axios);
+
+  beforeEach(() => {
+    mock.reset();
+    mock.onGet(/vet-clinics/).reply(200, vet);
+    mock.onGet(/dental-clinics/).reply(200, dental);
+  });
+
+
   it('search one field', async function () {
     const response = await request(app)
       .get(SEARCH_URL)
-      .query({ name: 'mayo' });
+      .query({ name: clinicToSearch.name });
 
     expect(response.body.data).toHaveLength(1);
   });
@@ -44,7 +57,7 @@ describe('Search tests', function () {
   it('search multiple fields', async function () {
     const response = await await request(app)
       .get(SEARCH_URL)
-      .query({ name: 'mayo', state: 'Florida' });
+      .query({ name: clinicToSearch.name, state: clinicToSearch.state});
 
     expect(response.body.data).toHaveLength(1);
   });

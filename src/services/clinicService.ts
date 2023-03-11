@@ -10,6 +10,7 @@ export async function getAllClinics() {
   let vetResponse: VetList = [];
   let dentalResponse: DentalList = [];
 
+  // I`m using Axios insted fetch API because of simplicity of mock responses in Axios
   await Promise.all([
     axios.get<VetList>('https://storage.googleapis.com/scratchpay-code-challenge/vet-clinics.json').then(resp => resp.data),
     axios.get<DentalList>('https://storage.googleapis.com/scratchpay-code-challenge/dental-clinics.json').then(resp => resp.data),
