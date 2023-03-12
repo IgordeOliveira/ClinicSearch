@@ -23,7 +23,7 @@ You must use at least one search param:
 | :--- | :--- | :--- |
 | `name` | `string` | **Optional**. |
 | `state` | `string` | **Optional**. |
-| `from | to` | `string` | **Must be used together** Ex: "from=09:00&to=20:00" |
+| `from / to` | `string` | **Must be used together** Ex: `from=09:00&to=20:00` |
 
 #### Responses
 ##### Success
