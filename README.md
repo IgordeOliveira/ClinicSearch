@@ -53,6 +53,11 @@ Failed response contains an error field with a message code:
 
 ## How to run
 
+Testing:
+
+```sh
+npm run test
+``` 
 Development:
 
 ```sh
