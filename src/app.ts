@@ -18,7 +18,7 @@ app.use(express.json());
 
 app.get<{}, MessageResponse>('/', (req, res) => {
   res.json({
-    data: 'v1',
+    data: '1.0.0',
   });
 });
 

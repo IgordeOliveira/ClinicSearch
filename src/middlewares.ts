@@ -18,14 +18,20 @@ export function errorHandler(err: Error, req: Request, res: Response<ErrorRespon
 }
 
 export function checkSearchParams(req: Request, res: Response, next: NextFunction) {
-  if (Object.keys(req.query).length !== 0) {
-    Object.keys(req.query).forEach(queryName => {
-      req.query[queryName] = req.query[queryName]?.toString().toLowerCase();
-    });
+  const allowedQuerys = ['name', 'state', 'from', 'to'];
 
-    next();
-  } else {
-    res.status(400).send({ data: 'missing search query params' });
+  // verify if the querys contains at least one of the allowed ones
+  if (!Object.keys(req.query).some(query => allowedQuerys.includes(query))) {
+    return res.status(400).send({ error: 'NO_SEARCH_PARAMS' });
   }
 
+  if ((req.query.from && !req.query.to) || (req.query.to && !req.query.from)) {
+    return res.status(400).send({ error: 'MUST_HAVE_FROM_AND_TO' });
+  }
+
+  Object.keys(req.query).forEach(queryName => {
+    req.query[queryName] = req.query[queryName]?.toString().toLowerCase();
+  });
+
+  next();
 }
